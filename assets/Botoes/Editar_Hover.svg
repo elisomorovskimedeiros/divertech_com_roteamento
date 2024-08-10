@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Creator: CorelDRAW Home & Student X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="72px" height="72px" version="1.0" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 72 72"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+    <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="79.3736" y1="20.0409" x2="-7.37362" y2="51.9591">
+     <stop offset="0" stop-opacity="1" stop-color="fuchsia"/>
+     <stop offset="0.419608" stop-opacity="1" stop-color="#B34CFF"/>
+     <stop offset="1" stop-opacity="1" stop-color="#6699FF"/>
+    </linearGradient>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_328032184">
+   <circle fill="url(#id0)" cx="36" cy="36" r="36"/>
+   <path fill="white" d="M21 34l31 0 0 18 -31 0 0 -18zm0 -10l6 0 0 2 4 0 0 -2 11 0 0 2 4 0 0 -2 6 0 0 6 -31 0 0 -6zm6 -4c-7,0 -10,-1 -10,2l0 32c0,1 1,2 2,2l35 0c2,0 2,-1 2,-2l0 -32c0,-3 -3,-2 -10,-2l0 -3 -4 0 0 3 -11 0 0 -3 -4 0 0 3z"/>
+   <path fill="none" d="M40 42l-14 0"/>
+   <path fill="white" fill-rule="nonzero" d="M40 44l-14 0 0 -3 14 0 0 3z"/>
+   <path fill="none" d="M43 37l0 10 -1 0 -2 1m3 0l0 -10 1 0 3 -1m-4 0l0 10 1 0 3 1m-4 0l0 -10 -1 0 -2 -1"/>
+   <path fill="white" fill-rule="nonzero" d="M44 39l0 7 0 0 1 0 0 0 2 1 -1 2 -2 -1 -1 0 -1 0 -2 1 -1 -2 2 -1 0 0 1 0 0 0 0 -7 0 0 -1 0 0 0 -2 -1 1 -2 2 1 1 0 1 0 2 -1 1 2 -2 1 0 0 -1 0 0 0z"/>
+  </g>
+ </g>
+</svg>

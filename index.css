@@ -1,0 +1,888 @@
+html, body {
+  width: 100%;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Roboto", "Arial", sans-serif;
+  /*font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+#topo a{
+  color: rgba(0, 0, 0, 0.9);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.date{
+  width: 150px;
+}
+/*
+input{
+  border: none;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+*/
+input {
+  margin-top: 5px;
+  height: 25px;
+  outline: 0;
+  border-width: 0 0 1px;
+  border-color: #ababab;
+  border-radius: 2px;
+  font-size: 1.1rem;
+  width: 80%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  }
+  input:focus { 
+  outline: 1px solid #000
+  }
+/*
+input[type="date"], 
+input[type="time"] {
+    font-size: 1.1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    width: 200px;
+    height: 30px;
+    border: 2px solid green;
+}*/
+h4{
+  margin: 0;
+}
+
+textarea{
+  border: none;
+  width: 90%;
+  height: 100px;
+  border-radius: 5px;
+  box-shadow:  2px 2px 2px 4px teal;
+}
+
+.alinharADireita{
+  width: 100%;
+  display: flex;
+  justify-content: right;
+}
+
+.alinharNasPontas{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.fonteUmPoucoMenor{
+  font-size: 1rem;
+}
+
+.letrasVermelhas{
+  color: red;
+}
+
+.campoInvalidado{
+  border-color: red;
+}
+
+.maiusculas{
+  text-transform: uppercase;
+}
+
+.vermelho{
+  background-color: red;
+  color: white;
+  border: none;
+}
+
+.azul{
+  background-color: blue;
+  color: white;
+  border: none;
+}
+
+/*.exibir{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}*/
+
+.naoExibir{
+  display: none;
+}
+
+.espacoAntes{
+  margin-top:5px;
+}
+
+.espacoDepois{
+  margin-bottom:5px;
+}
+
+.espacoDireita{
+  margin-right: 5px;
+}
+
+.espacoEsquerda{
+  margin-left: 5px;
+}
+
+.height30px{
+  height: 30px;
+}
+
+.divFlex{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.flex3colunas{
+  width: 30%;
+}
+
+.divFlexSpaceAround{
+  justify-content: space-around;
+}
+
+.justifyContentBetween{
+  display: flex;
+  justify-content: center !important; 
+}
+
+.posRelative{
+  position: relative;
+}
+
+.divFlexResponsivo{
+  flex-direction: row;
+}
+
+.dividirTelaEmDuasDivs{
+  width: 45%;
+}
+
+.div-botao{
+  padding: 5px;
+  border-radius: 7px;
+  font-size: 1.2rem;
+  min-width: 100px;
+}
+
+.div-botao-letra-pequena{
+  border-radius: 7px;
+}
+
+.padding5px{
+  padding: 5px;
+}
+
+.bordaBonita{
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow:3px 3px 5px rgba(0, 119, 255, 0.349);
+}
+
+.linkFake{
+  cursor: pointer;
+  background-color: rgba(95, 158, 160, 0.041);
+}
+
+.cancelarBackGroundColor{
+  background-color: rgba(95, 158, 160, 0.041) !important;
+}
+
+.container{
+  margin-right: 10px;
+  margin-left: 0px;
+}
+
+.espacoAoRedor{
+  margin: 5px;
+}
+
+.fieldset{
+  border: 2px solid gray;
+  border-radius: 10px;
+}
+
+.width300{
+  width: 300px;
+  max-width: 300px;
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+}
+
+.flexNaoResponsivo{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.col3Responsivo{
+  width: 33%;
+}
+
+#observacao{
+  width: 90%;
+}
+
+.containerEdicaoEvento{
+  max-width: 100%;
+}
+
+.btnEdicaoEvento{
+  width: 100px;
+  height: 150px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.clienteNoEvento{
+  padding: 5px;
+  width: max-content;
+  border-radius: 10px;
+}
+
+.editarClienteNoEvento{
+  background-color: #8383DB;
+  color: white;
+}
+
+.divNoCantoDireito{
+  position: fixed;
+  bottom: 100px;
+  right: 10%;
+}
+.campoTopo{
+  width: max-content;
+  padding-bottom: 10px;
+}
+
+.nomeOpcao{
+  font-size: 0.8rem;
+}
+
+#telaEdicaoEntidades{
+  width: 99%;
+  max-width: 98%;
+  min-height: 100px;
+  background-color: white;
+  position: fixed;
+  z-index: 2;
+  left: 1%;
+  top: 0%;
+  max-height: calc(100vh - 22px);
+  overflow-y: auto; 
+  
+  -webkit-animation: fadein 0.5s;
+  animation: fadein 0.5s;
+  padding-top: 20px;
+  border-radius: 20px;
+  border: solid 1px #8383DB;
+}
+
+
+#telaEdicaoEntidades hr{
+  border-color: #8383DB;
+}
+
+.listaDeBrinquedosNoEvento{
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 95%;
+  width: max-content;
+}
+.listaDeBrinquedosNoEventoEmEdicao{
+  box-shadow: 2px 2px 2px #000;
+}
+
+.containerSetasDeTroca{
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  margin-top: 10px;
+}
+
+.containerInnerSetas{
+  width: 100%;
+  height: 100%;
+}
+
+#campoForumulario label{
+  font-size: 0.8rem;
+}
+
+#campoForumulario{
+  padding: 10px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+}
+
+/* MODAL */
+.modal{
+  width: 81%;
+  min-height: 100px;
+  background-color: white;
+  position: fixed;
+  z-index: 2;
+  left: 6%;
+  top: 10%;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  -webkit-animation: fadein 0.5s;
+  animation: fadein 0.5s;
+}
+
+.capa{
+  background-color: rgb(0,0,0,0.2);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 2;
+  left: 0px;
+  top: 0px;
+}
+
+/* FIM DO MODAL */
+
+/* EDIÇÃO DA IMAGEM DO BRINQUEDO */
+.edicaoImagemBrinquedo{
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.edicaoImagemBrinquedo input{
+  display: none;
+}
+
+.edicaoImagemBrinquedo span{
+  z-index: 10;
+  position: absolute
+}
+
+.edicaoImagemBrinquedo img{
+  width: 200px;
+}
+
+.containerEdicaoImagemBrinquedo{
+  width: 100%;
+  margin-left: 50%;
+  margin-right: auto;
+}
+/* FIM EDIÇÃO DA IMAGEM DO BRINQUEDO */
+
+/* Barra Superior */
+
+.navbar-brand{
+  padding-bottom: 0px;
+}
+
+#barraSuperior{
+  font-size: 1.2rem; 
+  border: none;  
+}
+
+#topo{
+  background: rgba(0, 119, 255, 0.2);
+  padding: 7px;
+  padding-top: 10px;
+  padding-bottom: 10px;  
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.opcoesColapsaveis{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  margin-right: 20px;
+}
+
+.itensOpcoesColapsaveis{
+  margin-right: 10px;
+}
+
+select{
+  background: transparent; /* importante para exibir o novo ícone */
+  padding-bottom: 3px;
+  font-size: 1.2rem;
+  line-height: 1;
+  border: 0;
+  border-radius: 0;
+  height: 34px;
+}
+
+#campoTitulo{
+  margin-right: 10px;
+  margin-left: 40px;
+}
+
+#opcoesFixas{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+/*TelinhaEscolhaClientes*/
+.miniJanelaDeEscolha{
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 50%;
+  min-width: 250px;
+  width: fit-content;
+  background-color: white;
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 1px 1px 4px black;
+  color: black;
+}
+
+
+.campoObrigatorio{
+  margin-bottom: -15px;
+  margin-top: -2px;
+}
+
+/*celula brinquedo*/
+
+.selecionado{
+  background-color: #c1d4c7;
+}
+
+.qtdSelecionada{
+  position: absolute;
+  top: 16px;
+  right: -20px;
+  font-weight: bold;    
+  font-size: 40px;
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+  border: 2px solid red;
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px black;
+  background-color: #dacccc
+}
+
+
+#celulaBrinquedo{
+  width: 200px;
+}
+
+.modulo_brinquedo{
+  width: max-content;
+}
+
+.nome_brinquedo{
+  width: 100px;
+}
+
+.containerTrocaDeBrinquedos{
+  background-color: #8383db4d;
+}
+
+.caixaDeTrocaDeBrinquedos{
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: white;
+  width: 30%;
+  max-width: 500px;
+  padding: 10px;
+}
+
+/*Eventos*/
+.link_fake:hover{
+  cursor: pointer;
+}
+
+/*Início estilos módulo_evento*/
+.field_set_modulo_evento{
+  border: 2px solid !important;
+  border-radius: 20px;
+  /*margin-left: 10px; */
+}
+.borda_azul{
+  border-color: #007bff !important;
+}
+.borda_verde{
+  border-color: #28a745 !important;
+}
+.borda_vermelha{
+  border-color: red !important;
+}
+.borda_amarela{
+  border-color: yellow !important;
+}
+.texto_icone_brinquedos{
+  font-size: 12px;
+}
+.field_set_modulo_evento > legend{
+  margin-left: auto;
+  margin-right: auto;
+}
+.letra_bem_pequena{
+  font-size: 10px;
+}
+
+.espaco_em_cima{
+  margin-top: 10px;
+}
+
+.letra_pequena{
+  font-size: 15px;
+}
+
+.inputNumero{
+  width: 100px;
+}
+
+hr{
+  margin-top: 5px;
+}
+
+.container_painel_evento{
+  padding-top: 1rem;
+  margin-bottom: 1rem;
+}
+.painel{
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.titulo-evento-destaque{
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.nomeClienteListaEventos{
+  padding-left: auto;
+  padding-right: auto;
+}
+
+.listaResponsiva{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: top;
+}
+
+.listaFlexNaoResponsiva{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: top;
+}
+
+/*Janela de troca de endereço do evento*/
+.troca_de_endereco{
+  margin-bottom: 10px;
+  padding-left: 20px;
+  padding-right: auto;
+}
+
+
+/*Fim estilos módulo_evento*/
+
+/*Painel de Controle*/
+.configOpcoes{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /*background-color: rgba(255, 255, 255, 0.2);*/
+  border-radius: 10px 0 10px 0;
+}
+
+#opcoes{
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+#opcoes p{
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+}
+
+.opcao{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px; 
+}
+
+
+.clicado{
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.campoDestacado{
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.tituloPainel{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.botaoFechar:hover{
+  cursor: pointer;
+}
+
+
+.posAlterada{
+  position: fixed;
+  color: black;
+  left: 0px;
+}
+
+.PainelDeControle{
+  background-color: rgb(186, 143, 221);
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  color: white;
+}
+
+.opcoesClientes{
+  padding-bottom: 5px;
+}
+
+/*Fim do painel de controle*/
+
+/*Opções Eventos*/
+.containerEventos{
+  width: 100%;
+}
+
+#campoDeBuscaEventoPorId{
+  width: 90%;
+}
+
+#opcoesEventos{
+  font-size: 1.3rem;
+  padding-bottom: 10px;
+}
+
+.camposOpcoes{
+  width: 150px;
+}
+
+/*  novo evento  */
+#container-novo-evento, .containerForm{
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+#data-evento{
+  width: 200px;
+}
+
+label{
+  margin-top: 10px;
+}
+
+.form-flex{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+}
+
+.fieldset{
+  border: solid 1px #ababab;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.btn{
+  font-size: 1.2rem;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+}
+
+.btnBrancoAzul{
+  border: 2px solid blue;
+  background-color: white;
+}
+
+.btnBrancoVermelho{
+  border: 2px solid red;
+  background-color: white;
+}
+
+.btnVerde{
+  background-color: rgba(194, 248, 123);
+}
+
+
+/*  fim do novo evento  */
+
+/* inicio do TOAST  */
+
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#toast.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+/*configuração do toastify */
+.toast-container {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999; /* Certifique-se de que o z-index seja alto o suficiente para estar acima de outros elementos */
+}
+
+
+/*BRINQUEDOS*/
+.icone_brinquedos{
+  width: 100px;
+}
+
+.icone_brinquedo_bem_pequeno{
+  width: 50px;
+}
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+
+/* fim do TOAST  */
+
+.draggable {    
+  cursor: move;
+}
+
+.dragando {
+  position: absolute;
+}
+
+
+@media screen and (max-width: 700px){
+  .opcoesColapsaveis{
+    flex-direction: column;
+    align-items: end;
+  }
+
+  #barraSuperior{
+    justify-content: space-between;
+    align-items: start;
+  }
+
+  .listaResponsiva{
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+  }
+
+  .center{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  } 
+
+  .divFlex{
+    display: flex;
+    flex-direction: column;
+  }
+
+  #container-novo-evento, .dividirTelaEmDuasDivs{
+    width: 90%;    
+  }
+
+  .col3Responsivo{
+    width: 100%;
+  }
+
+  .caixaDeTrocaDeBrinquedos{
+    width: 80%;
+  }
+  .containerSetasDeTroca{
+    margin-left: 25%;
+  }
+
+  .containerSetasDeTroca{
+    transform: rotate(90deg);
+  }
+}
+
+

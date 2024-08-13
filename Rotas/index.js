@@ -15,6 +15,7 @@ import NovoCliente from '../components/Clientes/NovoCliente';
 import UploadFile from '../components/Brinquedos/Teste';
 import ConteudoDaTela from '../pages/ConteudoDaTela';
 
+//Para jogar conteúdo iterável na tela de trabalho utilize a função setConteudoDaTela de '../contexts/variaveisGlobais'
 function Rotas(){
     return(   
         <BrowserRouter>

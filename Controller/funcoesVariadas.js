@@ -60,6 +60,7 @@ export function validaCampo(campo){
 }
 
 export function retornaApenasNumeros(numero){
+    numero = String(numero);
     let copiaNumero = '';
         if(numero.length){
             for(let i = 0; i < numero.length; i++){
@@ -74,8 +75,11 @@ export function retornaApenasNumeros(numero){
 }
 
 export function mascaraDinheiro(valor){
+    valor = retornaApenasNumeros(valor);
     valor = String(valor);
-    if(valor.charAt(0) === '0'){
+    if(valor === 0 || valor === "0"){
+        return 'R$'+ valor;
+    }else if(valor.length > 0 && valor.charAt(0) === '0'){
         valor = valor.substr(1, valor.length+1);
     }
     return 'R$'+ valor;

@@ -536,6 +536,18 @@ select{
   cursor: pointer;
 }
 
+fundoAzulFraco{
+  border-color: #007bff5e !important;
+}
+
+fundoVermelhoFraco{
+  border-color: rgba(255, 0, 0, 0.356) !important;
+}
+
+fundoLaranjaFraco{
+  border-color: rgba(255, 68, 0, 0.397) !important;
+}
+
 /*Início estilos módulo_evento*/
 .field_set_modulo_evento{
   border: 2px solid !important;
@@ -762,6 +774,7 @@ label{
 .btnVerde{
   background-color: rgba(194, 248, 123);
 }
+
 
 
 /*  fim do novo evento  */

@@ -44,13 +44,19 @@ function TelaEdicaoEvento(props){
     const [botao4, setBotao4] = useState({botao: Copiar, nome: "Copiar"});
     const [botao5, setBotao5] = useState({botao: Cancelar, nome: "Cancelar"});
     const [botao6, setBotao6] = useState({botao: Confirmar, nome: "OK"});
+    const [statusEvento, setStatusEvento] = useState(null);
+    const [desconto, setDesconto] = useState(0);
+    const [sinal, setSinal] = useState(0);
+    const [valorTotal, setValorTotal] = useState(0);
+    const [valorAReceber, setValorAReceber] = useState(0);
     const {notify, mensagem, setConteudoDaTela} = useContext(ContextoGlobal);
+    
+    
 
     //refs do formulário
     
     const logradouro = useRef(null), data = useRef(null), numero = useRef(null), bairro = useRef(null),
         cidade = useRef(null), complemento = useRef(null), observacao = useRef(null), observacao_evento = useRef(null),
-        desconto = useRef(null), sinal = useRef(null), valor_total = useRef(null),
         possui_local_abrigado = useRef(null), status = useRef(null);
         
     //array de botoes que irá variar dependendo do tipo de entidade recebida
@@ -97,17 +103,22 @@ function TelaEdicaoEvento(props){
                 document.getElementById('cidade').value = props.evento.cidade_evento;
                 document.getElementById('complemento').value = props.evento.complemento_evento;
                 document.getElementById('observacao').value = props.evento.observacao_endereco_evento;
-                document.getElementById('observacao_evento').value = props.evento.observacao_evento;
-                document.getElementById('desconto').value = props.evento.valor_desconto;
-                document.getElementById('sinal').value = props.evento.valor_sinal;
-                document.getElementById('valor_total').value = props.evento.valor_total;
-                document.getElementById('status').value = props.evento.status;
+                document.getElementById('observacao_evento').value = props.evento.observacao_evento;                
                 document.getElementById('abrigo').value = props.evento.abrigo;
-
+                setSinal(props.evento.valor_sinal? props.evento.valor_sinal: 0);
+                setDesconto(props.evento.valor_desconto? props.evento.valor_desconto: 0);
+                setValorTotal(props.evento.valor_total? props.evento.valor_total: 0);
+                setValorAReceber(mascaraDinheiro(totalAReceber()));
             }
         }
         btnSelect();
     },[]);
+
+    useEffect(() => {
+        console.log(sinal);
+        setValorAReceber(mascaraDinheiro(totalAReceber()));
+        
+    }, [sinal, desconto, valorTotal])
 
     function funcao(e){
         switch(e.target.alt){
@@ -119,7 +130,7 @@ function TelaEdicaoEvento(props){
             break;
             case 'Confirmar': confirmar();
             break;
-            case 'OK': confirmar();
+            case 'OK': ok();
             break;
             default: console.log(e.target.alt);
         }
@@ -152,7 +163,30 @@ function TelaEdicaoEvento(props){
         setEmEdicao(!emEdicao);
     }
 
-    async function confirmar(){        
+    async function confirmar(){
+        let eventoProv = evento;
+        if(eventoProv.status !== 1){
+            eventoProv.status = 1;
+        }
+        let res = await FetchApi.edicaoPutSemArquivo(`evento/${eventoProv.id_evento}`, eventoProv);
+            
+            if(res.status){ //caso tenha editado mesmo
+                mensagem("Editado com Sucesso!", {theme: 'colored', type: 'success'});
+                fechar();
+            }else{
+                mensagem("Ocorreu um erro ao editar", {theme: 'dark', type: 'error'});
+                console.log(res);
+            }
+            //faz aparecer a mensagem setada a pouco            
+            notify();
+            //faz aparecer a url com o id correto
+            navigate('/eventos/'+eventoProv.id_evento);
+            //refaz a busca pelo evento recém editado
+            ListarEventoPorId (eventoProv.id_evento, setConteudoDaTela);  
+
+    }
+
+    async function ok(){        
         if(!foiEditado){
             fechar();
         }else{
@@ -166,10 +200,9 @@ function TelaEdicaoEvento(props){
                 numero: numero.current?.value,
                 observacao: observacao.current?.value,
                 observacao_evento: observacao_evento.current?.value,
-                status: status.current?.value,
-                valor_desconto: retornaApenasNumeros(desconto.current?.value),
-                valor_sinal: retornaApenasNumeros(sinal.current?.value),
-                valor_total: retornaApenasNumeros(valor_total.current?.value)
+                valor_desconto: retornaApenasNumeros(desconto),
+                valor_sinal: retornaApenasNumeros(sinal),
+                valor_total: retornaApenasNumeros(valorTotal)
             };
             if(brinquedosEditados){
                 eventoProv.brinquedos = brinquedos;
@@ -296,7 +329,7 @@ function TelaEdicaoEvento(props){
     }
 
     function totalAReceber(){
-        return parseInt(evento.valor_total) - parseInt(evento.valor_desconto) - parseInt(evento.valor_sinal);
+        return parseInt(retornaApenasNumeros(valorTotal)) - parseInt(retornaApenasNumeros(desconto)) - parseInt(retornaApenasNumeros(sinal));
     }
 
     function escolherBrinquedos(){
@@ -304,6 +337,29 @@ function TelaEdicaoEvento(props){
             brinquedosEditados = true;
             setTrocarBrinquedos(!trocarBrinquedos);
         }
+    }
+
+    function verificarStatus(){
+        let msg, estilo;
+        switch(evento.status){
+            case(0): msg = "Evento Ainda Não Confirmado";
+                     estilo = "fundoAzulFraco";
+            break;
+            case(1): msg = "Evento Confirmado";
+                     estilo = "btnVerde";
+            break;
+            case(2): msg = "Evento Cancelado";
+                     estilo = "fundoLaranjaFraco";
+            break;
+            default: msg = "Status Inválido";
+                     estilo = "fundoVermelhoFraco";
+            break;            
+        }
+        return(
+            <span className={`bordaBonita ${estilo} padding5px espacoEsquerda`}>
+                {msg}
+            </span>
+        )
     }
 
 
@@ -347,9 +403,12 @@ function TelaEdicaoEvento(props){
                     {/* Renderizar dados do evento */}
                     <div className='divFlex'>
                         <div className='col3Responsivo'>
-                            <span>
-                                Id do Evento:{evento.id_evento}
-                            </span>
+                            <div>
+                                <span>
+                                    Id do Evento:{evento.id_evento}
+                                </span>                            
+                                {verificarStatus()}          
+                            </div>
                             <div>
                                 <label htmlFor='data'>Data</label>
                             </div>
@@ -428,21 +487,14 @@ function TelaEdicaoEvento(props){
                                         disabled
                                 />     
                             </div>
-                            <div>
-                                <label htmlFor='status'>Status do evento</label>
-                            </div>
-                            <div>
-                                <input type="text" id='status' name='status'
-                                        ref = {status}
-                                        disabled
-                                />     
-                            </div>
+                            
                             <div>
                                 <label htmlFor='valor_total'>Valor Total do Evento</label>
                             </div>
                             <div>
                                 <input type="text" id='valor_total' name='valor_total'
-                                        ref = {valor_total}
+                                        value = {mascaraDinheiro(valorTotal)}
+                                        onChange = {(e) => setValorTotal(e.target.value)}
                                         disabled
                                 />
                             </div>
@@ -451,8 +503,8 @@ function TelaEdicaoEvento(props){
                             </div>
                             <div>
                                 <input type="text" id='sinal' name='sinal'
-                                        value={props.evento.valor_sinal? mascaraDinheiro(props.evento.valor_sinal): ''}
-                                        ref = {sinal}
+                                        value = {mascaraDinheiro(sinal)}
+                                        onChange = {(e) => setSinal(e.target.value)}
                                         disabled
                                 />
                             </div>
@@ -461,8 +513,8 @@ function TelaEdicaoEvento(props){
                             </div>
                             <div>
                                 <input type="text" id='desconto' name='desconto'
-                                        value={props.evento.valor_desconto? mascaraDinheiro(props.evento.valor_desconto): ''}
-                                        ref = {desconto}
+                                        value = {mascaraDinheiro(desconto)}
+                                        onChange = {(e) => setDesconto(e.target.value)}
                                         disabled
                                 />
                             </div>
@@ -470,7 +522,7 @@ function TelaEdicaoEvento(props){
                                 <label htmlFor='valor_a_receber'>Valor a Receber no Ato</label>
                             </div>
                             <div>
-                                {mascaraDinheiro(totalAReceber())}
+                                {valorAReceber}
                             </div>
                         </div>
                     </div>

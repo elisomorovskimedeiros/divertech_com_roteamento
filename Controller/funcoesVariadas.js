@@ -64,7 +64,7 @@ export function retornaApenasNumeros(numero){
     let copiaNumero = '';
         if(numero.length){
             for(let i = 0; i < numero.length; i++){
-                if(numero[i].charCodeAt() < 58 && numero[i].charCodeAt() > 47){
+                if((numero[i].charCodeAt() < 58 && numero[i].charCodeAt() > 47) || numero[i].charCodeAt() === 45){
                     copiaNumero += numero[i];
                 }
             }
@@ -76,13 +76,17 @@ export function retornaApenasNumeros(numero){
 
 export function mascaraDinheiro(valor){
     valor = retornaApenasNumeros(valor);
-    valor = String(valor);
-    if(valor === 0 || valor === "0"){
-        return 'R$'+ valor;
-    }else if(valor.length > 0 && valor.charAt(0) === '0'){
-        valor = valor.substr(1, valor.length+1);
+    //verificar se o valor recebido é válido
+    console.log(valor);
+    if(!valor || valor === "0"){
+        return 'R$0';
     }
-    return 'R$'+ valor;
+    //ou se o primeiro caractere do valor recebido é igual a 0.
+    else if(valor.charAt(0) === '0'){
+        valor = valor.substr(1, valor.length+1);
+        
+    }
+    return "R$"+valor;
 }
 
 export function mascaraCPF(cpf){

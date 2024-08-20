@@ -1,6 +1,6 @@
 var Definicoes = {
-    enderecoAPI: 'http://127.0.0.1:9000',
-    servidorDeImagens: "http://127.0.0.1:9000/imagem/",
+    enderecoAPI: 'http://localhost:9000',
+    servidorDeImagens: "http://localhost:9000/imagem/",
     enderecoInserirCliente: '/novoCliente',
     erroFormatacaoDeBuscaDeData: 'Insira uma data válida para busca',
     headers: new Headers({

@@ -66,7 +66,7 @@ export const FetchApi = {
             }); 
             return(await resposta);
         }catch(error){
-            return({resultado: false});
+            return({resultado: false, error});
         }
         
     },edicaoPostComArquivo: async function(rest, formData){

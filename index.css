@@ -115,6 +115,11 @@ textarea{
   color: white;
   border: none;
 }
+.laranja{
+  background-color: orange;
+  color: white;
+  border: none;
+}
 
 /*.exibir{
   display: flex;
@@ -243,6 +248,7 @@ textarea{
 .col3Responsivo{
   width: 33%;
 }
+
 
 #observacao{
   width: 90%;

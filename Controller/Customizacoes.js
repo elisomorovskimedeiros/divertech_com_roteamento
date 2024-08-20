@@ -4,6 +4,6 @@ export const CustBarraSuperior = {
 }
 
 export const CustAPI = {
-    endereco: 'http://127.0.0.1:9000',
-    enderecoImagemBrinquedos: 'http://127.0.0.1:9000/imagem/'
+    endereco: 'http://localhost:9000',
+    enderecoImagemBrinquedos: 'http://localhost:9000/imagem/'
 }

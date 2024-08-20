@@ -49,6 +49,7 @@ function TelaEdicaoEvento(props){
     const [sinal, setSinal] = useState(0);
     const [valorTotal, setValorTotal] = useState(0);
     const [valorAReceber, setValorAReceber] = useState(0);
+    const [confirmacaoDeFechamento, setConfirmacaoDeFechamento] = useState(false);
     const {notify, mensagem, setConteudoDaTela} = useContext(ContextoGlobal);
     
     
@@ -108,15 +109,15 @@ function TelaEdicaoEvento(props){
                 setSinal(props.evento.valor_sinal? props.evento.valor_sinal: 0);
                 setDesconto(props.evento.valor_desconto? props.evento.valor_desconto: 0);
                 setValorTotal(props.evento.valor_total? props.evento.valor_total: 0);
-                setValorAReceber(mascaraDinheiro(totalAReceber()));
+                //setValorAReceber(mascaraDinheiro(totalAReceber()));
+                setValorAReceber(totalAReceber());
             }
         }
         btnSelect();
     },[]);
 
     useEffect(() => {
-        console.log(sinal);
-        setValorAReceber(mascaraDinheiro(totalAReceber()));
+        setValorAReceber(totalAReceber());
         
     }, [sinal, desconto, valorTotal])
 
@@ -164,12 +165,14 @@ function TelaEdicaoEvento(props){
     }
 
     async function confirmar(){
-        let eventoProv = evento;
-        if(eventoProv.status !== 1){
-            eventoProv.status = 1;
+        let status = 0;
+        if(evento.status === 0){
+            status = 1;
+        }else if(evento.status === 1){
+            status = 2;
         }
-        let res = await FetchApi.edicaoPutSemArquivo(`evento/${eventoProv.id_evento}`, eventoProv);
-            
+        console.log( await FetchApi.edicaoPutSemArquivo(`/evento/confirmacao/${evento.id_evento}`, evento));
+         /*    
             if(res.status){ //caso tenha editado mesmo
                 mensagem("Editado com Sucesso!", {theme: 'colored', type: 'success'});
                 fechar();
@@ -180,9 +183,9 @@ function TelaEdicaoEvento(props){
             //faz aparecer a mensagem setada a pouco            
             notify();
             //faz aparecer a url com o id correto
-            navigate('/eventos/'+eventoProv.id_evento);
+            navigate('/eventos/'+evento.id_evento);
             //refaz a busca pelo evento recém editado
-            ListarEventoPorId (eventoProv.id_evento, setConteudoDaTela);  
+            ListarEventoPorId (evento.id_evento, setConteudoDaTela);   */
 
     }
 
@@ -240,13 +243,41 @@ function TelaEdicaoEvento(props){
     }
 
     function cancelar(){
-        fechar();
+        if(!foiEditado){
+            fechar();
+        }else{
+            setConfirmacaoDeFechamento(true);
+        }
     }
     
     //envia false para o controle recebido do component pai
     function fechar(){
         foiEditado = false;
         props.controle(false);
+    }
+
+    function DesejaSalvarAsAlteracoes(){
+        function sairSalvando(e){
+            e.preventDefault();
+            ok();
+        }
+        function sairSemSalvar(e){
+            e.preventDefault();
+            fechar();
+        }
+        function cancelarFechamento(e){
+            e.preventDefault();
+            setConfirmacaoDeFechamento(false);
+        }
+        return(
+            <Modal titulo={'Deseja salvar as alterações?'} controle={setConfirmacaoDeFechamento}>
+                <div className='flexNaoResponsivo'>
+                    <button onClick={sairSalvando} className='bordaBonita btnVerde'>Salvar</button>
+                    <button onClick={sairSemSalvar} className='bordaBonita'>Sair sem salvar</button>
+                    <button onClick={cancelarFechamento} className='bordaBonita laranja'>Cancelar</button>
+                </div>                
+            </Modal>
+        )
     }
 
     async function escolherCliente(clienteRecebido){
@@ -329,7 +360,7 @@ function TelaEdicaoEvento(props){
     }
 
     function totalAReceber(){
-        return parseInt(retornaApenasNumeros(valorTotal)) - parseInt(retornaApenasNumeros(desconto)) - parseInt(retornaApenasNumeros(sinal));
+        return mascaraDinheiro(parseInt(retornaApenasNumeros(valorTotal)) - parseInt(retornaApenasNumeros(desconto)) - parseInt(retornaApenasNumeros(sinal)));
     }
 
     function escolherBrinquedos(){
@@ -399,10 +430,11 @@ function TelaEdicaoEvento(props){
                     {trocarCliente && <BuscaDetalhadaClientes controle={controleJanelaCliente} 
                                                             escolherCliente={escolherCliente}/>}
                     {atualizarEnderecoEvento && <DesejaAtualizarEnderecoDoEvento/>}
+                    {confirmacaoDeFechamento && <DesejaSalvarAsAlteracoes />}
                     <hr />
                     {/* Renderizar dados do evento */}
                     <div className='divFlex'>
-                        <div className='col3Responsivo'>
+                        <div>
                             <div>
                                 <span>
                                     Id do Evento:{evento.id_evento}

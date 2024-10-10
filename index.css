@@ -781,6 +781,11 @@ label{
   background-color: rgba(194, 248, 123);
 }
 
+.btnVermelho{
+  background-color: red;
+  color: white;
+}
+
 
 
 /*  fim do novo evento  */

@@ -19,7 +19,7 @@ import Reagendar from '../../../assets/Botoes/Reagendar.svg';
 import Reagendar_Hover from '../../../assets/Botoes/Reagendar_Hover.svg';
 import Reagendar_Selecionado from '../../../assets/Botoes/Reagendar_Selecionado.svg';
 import ListaDeBrinquedosNoEvento from '../../Brinquedos/ListaDeBrinquedosNoEvento';
-import { mascaraDinheiro, transformarDataPortuguesParaDataIngles, retornaApenasNumeros } from '../../../Controller/funcoesVariadas';
+import { mascaraDinheiro, transformarDataPortuguesParaDataIngles, retornaApenasNumeros, transformarDataDBParaDataPortugues } from '../../../Controller/funcoesVariadas';
 import TelaDeTrocaDeBrinquedosNoEvento from '../../Brinquedos/TelaDeTrocaDeBrinquedosNoEvento';
 import {ListarEventoPorId, FetchApi } from '../../../Controller/FetchApi';
 let foiEditado = false;
@@ -42,7 +42,7 @@ function TelaEdicaoEvento(props){
     const [botao2, setBotao2] = useState({botao: Confirmar, nome: "Confirmar"});
     const [botao3, setBotao3] = useState({botao: Reagendar, nome: "Reagendar"});
     const [botao4, setBotao4] = useState({botao: Copiar, nome: "Copiar"});
-    const [botao5, setBotao5] = useState({botao: Cancelar, nome: "Cancelar"});
+    const [botao5, setBotao5] = useState({botao: Cancelar, nome: "Fechar"});
     const [botao6, setBotao6] = useState({botao: Confirmar, nome: "OK"});
     const [statusEvento, setStatusEvento] = useState(null);
     const [desconto, setDesconto] = useState(0);
@@ -51,6 +51,7 @@ function TelaEdicaoEvento(props){
     const [valorAReceber, setValorAReceber] = useState(0);
     const [confirmacaoDeFechamento, setConfirmacaoDeFechamento] = useState(false);
     const {notify, mensagem, setConteudoDaTela} = useContext(ContextoGlobal);
+    const [eventoEmConfirmacao, setEventoEmConfirmacao] = useState(false);
     
     
 
@@ -72,6 +73,10 @@ function TelaEdicaoEvento(props){
         function btnSelect(){
             
             if(props.hasOwnProperty("evento")){
+                console.log(props.evento.status);
+                if(props.evento.status === 1){
+                    setBotao2({botao: Cancelar, nome: "Cancelar"});
+                }
                 setConjBotoes([
                     botao1, botao2, botao3, botao4, botao5
                 ]);
@@ -127,11 +132,13 @@ function TelaEdicaoEvento(props){
             break;
             case 'Editando': editar();
             break;
-            case 'Cancelar': cancelar();
+            case 'Fechar': fecharEvento();
             break;
             case 'Confirmar': confirmar();
             break;
             case 'OK': ok();
+            break;
+            case 'Cancelar': confirmar();
             break;
             default: console.log(e.target.alt);
         }
@@ -164,14 +171,42 @@ function TelaEdicaoEvento(props){
         setEmEdicao(!emEdicao);
     }
 
-    async function confirmar(){
-        let status = 0;
-        if(evento.status === 0){
-            status = 1;
-        }else if(evento.status === 1){
-            status = 2;
+    function confirmar(){
+        setEventoEmConfirmacao(true);
+    }
+
+    async function executarConfirmacao(e){
+        e.preventDefault();
+        switch(evento.status){
+            case 0: evento.status = 1;
+                    setBotao2({botao: Cancelar, nome: "Cancelar"});
+            break;
+            case 1: evento.status = 2;
+                    setBotao2({botao: Confirmar, nome: "Confirmar"});
+            break;
+            case 2: evento.status = 1;
+                    setBotao2({botao: Cancelar, nome: "Cancelar"});
+            break;                    
         }
-        console.log( await FetchApi.edicaoPutSemArquivo(`/evento/confirmacao/${evento.id_evento}`, evento));
+        setEventoEmConfirmacao(false);
+        console.log( await FetchApi.edicaoPutSemArquivo(`/evento/confirmacao/${evento.id_evento}`, evento.status));
+    }
+
+    function DesejaConfirmarEvento(){
+        
+        return(
+            <Modal titulo={'Confirmar o Evento?'} controle={setEventoEmConfirmacao}>
+                <p>Data: {transformarDataDBParaDataPortugues(evento.data_evento)}</p>
+                <p>Cliente: {cliente.nome_cliente} </p>
+                <p>Lista de brinquedos:</p>
+                <ListaDeBrinquedosNoEvento brinquedos={brinquedos} />
+                <div className='flexNaoResponsivo'>
+                    <button className={`btn ${evento.status === 1? 'btnVermelho': 'btnVerde'}`} onClick={executarConfirmacao}>{evento.status === 1? 'OK': 'Cancelar'}</button>
+                    <button className={`btn ${evento.status === 1? 'btnBrancoAzul': 'btnVermelho'}`} onClick={() => setEventoEmConfirmacao(false)}>Fechar</button>
+                </div>
+            </Modal>
+        )
+    }
          /*    
             if(res.status){ //caso tenha editado mesmo
                 mensagem("Editado com Sucesso!", {theme: 'colored', type: 'success'});
@@ -187,7 +222,7 @@ function TelaEdicaoEvento(props){
             //refaz a busca pelo evento recém editado
             ListarEventoPorId (evento.id_evento, setConteudoDaTela);   */
 
-    }
+    
 
     async function ok(){        
         if(!foiEditado){
@@ -241,8 +276,8 @@ function TelaEdicaoEvento(props){
     function copiar(){
         
     }
-
-    function cancelar(){
+    //fecha a tela de edição do evento
+    function fecharEvento(){
         if(!foiEditado){
             fechar();
         }else{
@@ -431,6 +466,7 @@ function TelaEdicaoEvento(props){
                                                             escolherCliente={escolherCliente}/>}
                     {atualizarEnderecoEvento && <DesejaAtualizarEnderecoDoEvento/>}
                     {confirmacaoDeFechamento && <DesejaSalvarAsAlteracoes />}
+                    {eventoEmConfirmacao && <DesejaConfirmarEvento />}
                     <hr />
                     {/* Renderizar dados do evento */}
                     <div className='divFlex'>

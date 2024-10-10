@@ -14,6 +14,8 @@ import NovoEvento from '../components/Eventos/NovoEvento';
 import NovoCliente from '../components/Clientes/NovoCliente';
 import UploadFile from '../components/Brinquedos/Teste';
 import ConteudoDaTela from '../pages/ConteudoDaTela';
+import EdicaoEntidades from '../components/EdicaoEntidades';
+import TelaEdicaoEventoNova from '../components/Eventos/TelaEdicaoEventoNova';
 
 //Para jogar conteúdo iterável na tela de trabalho utilize a função setConteudoDaTela de '../contexts/variaveisGlobais'
 function Rotas(){
@@ -30,7 +32,7 @@ function Rotas(){
                 <Route path='/brinquedos' element={ <Private><Dashboard><TelaBrinquedos /></Dashboard></Private> } /> 
                 <Route path='/eventos/new' element={ <Private><Dashboard><HandleEventos /><NovoEvento /></Dashboard></Private> } />
                 <Route path='/eventos/:id' element={ <Private><Dashboard><HandleEventos /><TelaEventos /></Dashboard></Private> } /> 
-
+                <Route path='/edicao' element={ <EdicaoEntidades entidade={<TelaEdicaoEventoNova/>}/> } /> 
                 <Route path='/teste' element={ <UploadFile />} />             
             </Routes>
         </BrowserRouter>     

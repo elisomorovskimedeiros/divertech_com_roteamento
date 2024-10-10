@@ -6,6 +6,7 @@ import { FetchApi} from '../../../Controller/FetchApi';
 import CelulaEvento from '../CelulaEventos';
 import TelaEdicaoEvento from '../TelaEdicaoEvento';
 import EdicaoEntidades from '../../EdicaoEntidades/index.js';
+import TelaEdicaoEventoNova from '../TelaEdicaoEventoNova/index.js';
 
 function dataProximos15Dias(){
     let hoje = new Date();
@@ -91,8 +92,9 @@ function TelaEventos(){
                 }):
                 ''}
             </div>
-            {edicaoAberta? /*<TelaEdicaoEvento controle={setEdicaoAberta} evento={eventoEmEdicao} />*/            
-            <TelaEdicaoEvento  controle={setEdicaoAberta} evento={eventoEmEdicao} />
+            {edicaoAberta?             
+            /*<TelaEdicaoEvento  controle={setEdicaoAberta} evento={eventoEmEdicao} />*/
+            <EdicaoEntidades controle={handlerEdicaoEvento} entidade = {<TelaEdicaoEventoNova evento={eventoEmEdicao} />} />
             : ''}
         </div>
     );

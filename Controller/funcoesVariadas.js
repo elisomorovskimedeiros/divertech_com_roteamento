@@ -77,7 +77,6 @@ export function retornaApenasNumeros(numero){
 export function mascaraDinheiro(valor){
     valor = retornaApenasNumeros(valor);
     //verificar se o valor recebido é válido
-    console.log(valor);
     if(!valor || valor === "0"){
         return 'R$0';
     }

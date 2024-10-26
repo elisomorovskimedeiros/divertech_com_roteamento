@@ -3,10 +3,9 @@ import { useState, useRef, useEffect } from 'react';
 import { mascaraDinheiro, transformarDataPortuguesParaDataIngles, retornaApenasNumeros, transformarDataDBParaDataPortugues } from '../../../Controller/funcoesVariadas';
 
 function TelaDadosEvento(props){
-    const [evento, setEvento] = useState(props.evento);
-    const [desconto, setDesconto] = useState(0);
+    /* const [desconto, setDesconto] = useState(0);
     const [sinal, setSinal] = useState(0);
-    const [valorTotal, setValorTotal] = useState(0);
+    const [valorTotal, setValorTotal] = useState(0); */
     const [valorAReceber, setValorAReceber] = useState(0);
 
     //refs do formulário
@@ -15,34 +14,47 @@ function TelaDadosEvento(props){
         cidade = useRef(null), complemento = useRef(null), observacao = useRef(null), observacao_evento = useRef(null),
         possui_local_abrigado = useRef(null), status = useRef(null);
 
-    useEffect(() => {
-        function setUp(){
-            //setando valores iniciais dos inputs
-            document.getElementById('data').value = transformarDataPortuguesParaDataIngles(props.evento?.data_evento);
-            document.getElementById('logradouro').value = props.evento?.logradouro_evento;
-            document.getElementById('numero').value = props.evento?.numero_evento;
-            document.getElementById('bairro').value = props.evento.bairro_evento;
-            document.getElementById('cidade').value = props.evento.cidade_evento;
-            document.getElementById('complemento').value = props.evento.complemento_evento;
-            document.getElementById('observacao').value = props.evento.observacao_endereco_evento;
-            document.getElementById('observacao_evento').value = props.evento.observacao_evento;                
-            document.getElementById('abrigo').value = props.evento.abrigo;
-            setSinal(props.evento.valor_sinal? props.evento.valor_sinal: 0);
-            setDesconto(props.evento.valor_desconto? props.evento.valor_desconto: 0);
-            setValorTotal(props.evento.valor_total? props.evento.valor_total: 0);
-            //setValorAReceber(mascaraDinheiro(totalAReceber()));
-            setValorAReceber(totalAReceber());
-        }
-        setUp();
-    }, []);
     
-    useEffect(() => {
-        setValorAReceber(totalAReceber());
-    }, [sinal, desconto, valorTotal]);
+    
+    
+
+    
+    
+
+ 
+    //envia false para o controle recebido do component pai
+    /*function fechar(){
+        foiEditado = false;
+        props.controle(false);
+    }
+
+    function DesejaSalvarAsAlteracoes(){
+        function sairSalvando(e){
+            e.preventDefault();
+            props.ok();
+        }
+        function sairSemSalvar(e){
+            e.preventDefault();
+            fechar();
+        }
+        function cancelarFechamento(e){
+            e.preventDefault();
+            setConfirmacaoDeFechamento(false);
+        }
+        return(
+            <Modal titulo={'Deseja salvar as alterações?'} controle={setConfirmacaoDeFechamento}>
+                <div className='flexNaoResponsivo'>
+                    <button onClick={sairSalvando} className='bordaBonita btnVerde'>Salvar</button>
+                    <button onClick={sairSemSalvar} className='bordaBonita'>Sair sem salvar</button>
+                    <button onClick={cancelarFechamento} className='bordaBonita laranja'>Cancelar</button>
+                </div>                
+            </Modal>
+        )
+    }*/
 
     function verificarStatus(){
         let msg, estilo;
-        switch(evento.status){
+        switch(props.evento.status){
             case(0): msg = "Evento Ainda Não Confirmado";
                      estilo = "fundoAzulFraco";
             break;
@@ -64,7 +76,7 @@ function TelaDadosEvento(props){
     }
 
     function totalAReceber(){
-        return mascaraDinheiro(parseInt(retornaApenasNumeros(valorTotal)) - parseInt(retornaApenasNumeros(desconto)) - parseInt(retornaApenasNumeros(sinal)));
+        return mascaraDinheiro(parseInt(retornaApenasNumeros(props.valorTotal)) - parseInt(retornaApenasNumeros(props.desconto)) - parseInt(retornaApenasNumeros(props.sinal)));
     }
 
     return(        
@@ -72,7 +84,7 @@ function TelaDadosEvento(props){
             <div>
                 <div>
                     <span>
-                        Id do Evento:{evento.id_evento}
+                        Id do Evento:{props.evento.id_evento}
                     </span>                            
                     {verificarStatus()}          
                 </div>
@@ -159,8 +171,8 @@ function TelaDadosEvento(props){
                 </div>
                 <div>
                     <input type="text" id='valor_total' name='valor_total'
-                            value = {mascaraDinheiro(valorTotal)}
-                            onChange = {(e) => setValorTotal(e.target.value)}
+                            value = {mascaraDinheiro(props.valorTotal)}
+                            onChange = {(e) => props.setValorTotal(e.target.value)}
                             disabled = {!props.emEdicao}
                     />
                 </div>
@@ -169,8 +181,8 @@ function TelaDadosEvento(props){
                 </div>
                 <div>
                     <input type="text" id='sinal' name='sinal'
-                            value = {mascaraDinheiro(sinal)}
-                            onChange = {(e) => setSinal(e.target.value)}
+                            value = {mascaraDinheiro(props.sinal)}
+                            onChange = {(e) => props.setSinal(e.target.value)}
                             disabled = {!props.emEdicao}
                     />
                 </div>
@@ -179,8 +191,8 @@ function TelaDadosEvento(props){
                 </div>
                 <div>
                     <input type="text" id='desconto' name='desconto'
-                            value = {mascaraDinheiro(desconto)}
-                            onChange = {(e) => setDesconto(e.target.value)}
+                            value = {mascaraDinheiro(props.desconto)}
+                            onChange = {(e) => props.setDesconto(e.target.value)}
                             disabled = {!props.emEdicao}
                     />
                 </div>
@@ -188,7 +200,7 @@ function TelaDadosEvento(props){
                     <label htmlFor='valor_a_receber'>Valor a Receber no Ato</label>
                 </div>
                 <div>
-                    {valorAReceber}
+                    {mascaraDinheiro(props.valorAReceber)}
                 </div>
             </div>
         </div>

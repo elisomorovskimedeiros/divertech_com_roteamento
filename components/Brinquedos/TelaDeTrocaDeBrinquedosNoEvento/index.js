@@ -4,6 +4,7 @@ import { FetchApi } from '../../../Controller/FetchApi';
 import ContainerSetasDeTroca from '../../ContainerSetasDeTrocas';
 import { FaCircleCheck } from 'react-icons/fa6';
 import ListaDeBrinquedosNoEvento from '../ListaDeBrinquedosNoEvento';
+import { transformarDataPortuguesParaDataIngles} from '../../../Controller/funcoesVariadas';
 
  
 
@@ -14,12 +15,10 @@ function TelaDeTrocaDeBrinquedosNoEvento(props){
    
     useEffect(() => {
         async function capturarBrinquedosVagos(){
-            let listaDeBrinquedosVagosProv = await FetchApi.consultaGet(`/brinquedos/data/${props.data_evento}`);
-            if(!(listaDeBrinquedosVagosProv.brinquedo.status && listaDeBrinquedosVagosProv.brinquedo.resultado.length)){
-                listaDeBrinquedosVagosProv = undefined;
-            }else{
-                listaDeBrinquedosVagosProv = listaDeBrinquedosVagosProv.brinquedo.resultado;
-            }
+            let listaDeBrinquedosVagosProv = await FetchApi.consultaGet(`/brinquedos/data/${transformarDataPortuguesParaDataIngles(props.data_evento)}`);
+           
+            listaDeBrinquedosVagosProv = listaDeBrinquedosVagosProv.brinquedo.resultado;
+           
             setListaDeBrinquedosVagos(listaDeBrinquedosVagosProv);
         }
         capturarBrinquedosVagos();

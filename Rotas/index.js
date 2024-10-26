@@ -32,7 +32,8 @@ function Rotas(){
                 <Route path='/brinquedos' element={ <Private><Dashboard><TelaBrinquedos /></Dashboard></Private> } /> 
                 <Route path='/eventos/new' element={ <Private><Dashboard><HandleEventos /><NovoEvento /></Dashboard></Private> } />
                 <Route path='/eventos/:id' element={ <Private><Dashboard><HandleEventos /><TelaEventos /></Dashboard></Private> } /> 
-                <Route path='/edicao' element={ <EdicaoEntidades entidade={<TelaEdicaoEventoNova/>}/> } /> 
+                {/*<Route path='/edicao' element={ <EdicaoEntidades entidade={<TelaEdicaoEventoNova/>}/> } />*/}
+                <Route path='/edicao' element={ <EdicaoEntidades /> } /> 
                 <Route path='/teste' element={ <UploadFile />} />             
             </Routes>
         </BrowserRouter>     

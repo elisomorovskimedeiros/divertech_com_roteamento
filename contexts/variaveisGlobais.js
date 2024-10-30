@@ -12,7 +12,9 @@ function ProvedorVariaveisGlobais({children}){
             conteudo: undefined
         }
     );
+    const [evento, setEvento] = useState({});
     const [eventos, setEventos] = useState([]);
+    const [cliente, setCliente] = useState({});
     const [clientes, setClientes] = useState([]);
     const [mensagemToast, setMensagemToast] = useState(null);
     const [exibirToast, setExibirToast] = useState(false); 
@@ -36,10 +38,14 @@ function ProvedorVariaveisGlobais({children}){
             setLarguraTela,
             conteudoDaTela,
             setConteudoDaTela,
+            evento,
+            setEvento,
             eventos, 
             setEventos,
             mostrarOpcoes,
             setMostrarOpcoes,
+            cliente,
+            setCliente,
             clientes,
             setClientes,
             mensagemToast,

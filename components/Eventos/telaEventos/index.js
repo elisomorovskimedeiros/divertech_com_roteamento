@@ -93,8 +93,8 @@ function TelaEventos(){
                 ''}
             </div>
             {edicaoAberta?             
-            /*<TelaEdicaoEvento  controle={setEdicaoAberta} evento={eventoEmEdicao} />*/
-            <EdicaoEntidades controle={handlerEdicaoEvento} entidade = {<TelaEdicaoEventoNova evento={eventoEmEdicao} />} />
+            <TelaEdicaoEvento  controle={setEdicaoAberta} evento={eventoEmEdicao} />
+            /*<EdicaoEntidades controle={handlerEdicaoEvento} entidade = {<TelaEdicaoEventoNova evento={eventoEmEdicao} />} />*/
             : ''}
         </div>
     );

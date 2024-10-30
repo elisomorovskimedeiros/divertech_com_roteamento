@@ -22,6 +22,7 @@ import ListaDeBrinquedosNoEvento from '../../Brinquedos/ListaDeBrinquedosNoEvent
 import { mascaraDinheiro, transformarDataPortuguesParaDataIngles, retornaApenasNumeros, transformarDataDBParaDataPortugues } from '../../../Controller/funcoesVariadas';
 import TelaDeTrocaDeBrinquedosNoEvento from '../../Brinquedos/TelaDeTrocaDeBrinquedosNoEvento';
 import {ListarEventoPorId, FetchApi } from '../../../Controller/FetchApi';
+import JanelaDeReagendamento from '../JanelaDeReagendamento';
 let foiEditado = false;
 let clienteEditado = false;
 let brinquedosEditados = false;
@@ -52,6 +53,7 @@ function TelaEdicaoEvento(props){
     const [confirmacaoDeFechamento, setConfirmacaoDeFechamento] = useState(false);
     const {notify, mensagem, setConteudoDaTela} = useContext(ContextoGlobal);
     const [eventoEmConfirmacao, setEventoEmConfirmacao] = useState(false);
+    const [abrirJanelaDeReagendamento, setAbrirJanelaDeReagendamento] = useState(false);
     
     
 
@@ -73,7 +75,6 @@ function TelaEdicaoEvento(props){
         function btnSelect(){
             
             if(props.hasOwnProperty("evento")){
-                console.log(props.evento.status);
                 if(props.evento.status === 1){
                     setBotao2({botao: Cancelar, nome: "Cancelar"});
                 }
@@ -140,6 +141,8 @@ function TelaEdicaoEvento(props){
             break;
             case 'Cancelar': confirmar();
             break;
+            case 'Reagendar': reagendar();
+            break;
             default: console.log(e.target.alt);
         }
     }
@@ -164,7 +167,9 @@ function TelaEdicaoEvento(props){
             btnProv.botao = Editar_Selecionado;
             setConjBotoes([botao1, botao6, botao5]);
             for(let input of inputs){
-                input.disabled = false;
+                if(input.id !== "data"){
+                    input.disabled = false;
+                }
             }
         }
         setBotao1(btnProv);
@@ -270,7 +275,15 @@ function TelaEdicaoEvento(props){
     }
 
     function reagendar(){
-        
+        setAbrirJanelaDeReagendamento(true);
+    }
+
+    function realizarReagendamento(dataReagendada, brinquedosOcupados){
+        document.getElementById("data").value = dataReagendada;
+        let brinquedoProv = brinquedos.filter(brinquedo =>
+            !brinquedosOcupados.some(brinquedoOcupado => brinquedoOcupado.id_brinquedo === brinquedo.id_brinquedo)
+        );
+        setBrinquedos(brinquedoProv);
     }
 
     function copiar(){
@@ -467,6 +480,11 @@ function TelaEdicaoEvento(props){
                     {atualizarEnderecoEvento && <DesejaAtualizarEnderecoDoEvento/>}
                     {confirmacaoDeFechamento && <DesejaSalvarAsAlteracoes />}
                     {eventoEmConfirmacao && <DesejaConfirmarEvento />}
+                    {abrirJanelaDeReagendamento && <JanelaDeReagendamento 
+                        controle = {setAbrirJanelaDeReagendamento} 
+                        evento = {evento}
+                        realizarReagendamento = {realizarReagendamento}
+                    />}
                     <hr />
                     {/* Renderizar dados do evento */}
                     <div className='divFlex'>

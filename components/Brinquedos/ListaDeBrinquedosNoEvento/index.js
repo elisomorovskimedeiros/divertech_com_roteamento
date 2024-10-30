@@ -27,7 +27,7 @@ const ListaDeBrinquedosNoEvento = (props) => {
                                 <div className="modulo_brinquedo p-2">
                                     <div className="nome_brinquedo letra_bem_pequena">{brinquedo.nome}</div>
                                     <center className="modulo_brinquedo">
-                                        <img alt={brinquedo.nome} className="icone_brinquedo" src={`${Definicoes.servidorDeImagens}${brinquedo.imagem? brinquedo.imagem: brinquedo.foto_brinquedo}`} height="40px"  />
+                                        <img alt={brinquedo.nome} className={`icone_brinquedo ${props.pb? "filtroPretoEBranco" : ''}`} src={`${Definicoes.servidorDeImagens}${brinquedo.imagem? brinquedo.imagem: brinquedo.foto_brinquedo}`} height="40px"  />
                                     </center>
                                 </div>
                             </div>

@@ -249,6 +249,12 @@ textarea{
   width: 33%;
 }
 
+.filtroPretoEBranco{
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray; /* IE */
+}
+
 
 #observacao{
   width: 90%;

@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {ContextoGlobal} from '../../../contexts/variaveisGlobais';
 import Botao from '../../BotoesEdicao/Botao';
 import Cancelar from '../../../assets/Botoes/Cancelar.svg'
@@ -20,28 +21,27 @@ import TelaDadosEvento from "../TelaDadosEvento";
 import TelaBrinquedos from "../../Brinquedos/TelaBrinquedos";
 import TelaDadosBrinquedos from "../TelaDadosBrinquedos";
 import { retornaApenasNumeros, mascaraDinheiro,  transformarDataPortuguesParaDataIngles } from "../../../Controller/funcoesVariadas";
+import { FetchApi, ListarEventoPorId } from "../../../Controller/FetchApi";
 //import Reagendar_Selecionado from '../../../assets/Botoes/Reagendar_Selecionado.svg';
 
 function TelaEdicaoEventoNova(props){
-    const [evento, setEvento] = useState(props.evento);
-    const [brinquedos, setBrinquedos] = useState([]);
     const [atualizarEnderecoEvento, setAtualizarEnderecoEvento] = useState(false);
     //criei uma variável simples emEdicao para poder realizar as lógicas de comparação que não consigo com um state
     const [stateEmEdicao, setStateEmEdicao] = useState(false);
     const [eventoParaTrocaDeEndereco, setEventoParaTrocaDeEndereco] = useState({});
-    const {notify, mensagem, setConteudoDaTela} = useContext(ContextoGlobal);
-
+    const {notify, mensagem, setConteudoDaTela, evento, setEvento, cliente, setCliente, brinquedos, setBrinquedos} = useContext(ContextoGlobal);
+    //setEvento(props.evento);
     const [desconto, setDesconto] = useState(undefined);
     const [sinal, setSinal] = useState(undefined);
     const [valorTotal, setValorTotal] = useState(undefined); 
     const [valorAReceber, setValorAReceber] = useState(undefined);
 
-    let emEdicao = false;   
-    let cliente = {
-        nome: props.evento.nome_cliente,
-        id_cliente: props.evento.id_cliente
-    };
+    const [brinquedosEditados, setBrinquedosEditados] = useState(false);
+    const [clienteEditado, setClienteEditado] = useState(false);
     
+    const navigate = useNavigate();
+
+    let emEdicao = false; 
     
     let botao1 = <Botao imagem = {Editar} nome = {'Editar'} onClick = {editar}/>
     let botao2 = <Botao imagem = {Confirmar} nome = {'Confirmar'} onClick = ""/>
@@ -51,15 +51,37 @@ function TelaEdicaoEventoNova(props){
     let botao6 = <Botao imagem = {Confirmar} nome = {'OK'} onClick = {ok}/>
     let foiEditado = false;
 
- // ############## PAREI NA TROCA DE ENDEREÇO PELA ÚLTIMA FESTA DO CLIENTE NOVO
     //conjunto de Botões para a tela mãe exibir
     useEffect(() => {
-        setUp();
+        setEvento(props.evento);
     }, []);
+
+    useEffect(() => {
+        setUp();
+    }, [evento]); 
+
+    useEffect(() => {
+        
+        console.log(cliente);
+    }, [cliente]);
 
     useEffect(() => {
         setValorAReceber(totalAReceber());
     }, [desconto, sinal, valorTotal]);
+
+    useEffect(() => {
+        function atualizarEndereco(){
+            if(atualizarEnderecoEvento){
+                document.getElementById('logradouro').value = eventoParaTrocaDeEndereco.logradouro_evento;
+                document.getElementById('numero').value = eventoParaTrocaDeEndereco.numero_evento;
+                document.getElementById('bairro').value = eventoParaTrocaDeEndereco.bairro_evento;
+                document.getElementById('cidade').value = eventoParaTrocaDeEndereco.cidade_evento;
+                document.getElementById('complemento').value = eventoParaTrocaDeEndereco.complemento_evento;
+                document.getElementById('observacao_evento').value = eventoParaTrocaDeEndereco.observacao_endereco_evento;
+            }
+        }   
+        atualizarEndereco();
+    }, [atualizarEnderecoEvento, eventoParaTrocaDeEndereco]);
 
     function totalAReceber(){
         return mascaraDinheiro(parseInt(retornaApenasNumeros(valorTotal? valorTotal : props.evento.valor_total))
@@ -68,24 +90,30 @@ function TelaEdicaoEventoNova(props){
     }
 
     function setUp(){
-        props.setConjBotoesTopo([botao1, botao2, botao3, botao4, botao5]);
-        setBrinquedos(props.evento.brinquedos);
-        //setando valores iniciais dos inputs
-        document.getElementById('data').value = transformarDataPortuguesParaDataIngles(props.evento.data_evento);
-        document.getElementById('logradouro').value = props.evento.logradouro_evento;
-        document.getElementById('numero').value = props.evento.numero_evento;
-        document.getElementById('bairro').value = props.evento.bairro_evento;
-        document.getElementById('cidade').value = props.evento.cidade_evento;
-        document.getElementById('complemento').value = props.evento.complemento_evento;
-        document.getElementById('observacao').value = props.evento.observacao_endereco_evento;
-        document.getElementById('observacao_evento').value = props.evento.observacao_evento;                
-        document.getElementById('abrigo').value = props.evento.abrigo;
-        setSinal(props.evento.valor_sinal? props.evento.valor_sinal: 0);
-        setDesconto(props.evento.valor_desconto? props.evento.valor_desconto: 0);
-        setValorTotal(props.evento.valor_total? props.evento.valor_total: 0);
-        setValorAReceber(mascaraDinheiro(totalAReceber()));
-        setValorAReceber(totalAReceber());
+        if(evento && evento.hasOwnProperty("data_evento")){
+            setBrinquedos(props.evento.brinquedos);
+            setCliente({
+                nome: props.evento.nome_cliente,
+                id_cliente: props.evento.id_cliente
+            });
+            props.setConjBotoesTopo([botao1, botao2, botao3, botao4, botao5]);
+            document.getElementById('data').value = evento && transformarDataPortuguesParaDataIngles(evento.data_evento);
+            document.getElementById('logradouro').value = evento.logradouro_evento;
+            document.getElementById('numero').value = evento.numero_evento;
+            document.getElementById('bairro').value = evento.bairro_evento;
+            document.getElementById('cidade').value = evento.cidade_evento;
+            document.getElementById('complemento').value = evento.complemento_evento;
+            document.getElementById('observacao').value = evento.observacao_endereco_evento;
+            document.getElementById('observacao_evento').value = evento.observacao_evento;                
+            document.getElementById('abrigo').value = evento.abrigo;
+            setSinal(props.evento.valor_sinal? evento.valor_sinal: 0);
+            setDesconto(props.evento.valor_desconto? evento.valor_desconto: 0);
+            setValorTotal(props.evento.valor_total? evento.valor_total: 0);
+            setValorAReceber(mascaraDinheiro(totalAReceber()));
+            setValorAReceber(totalAReceber());
+        }
     }
+    
 
     useEffect(() => {   
         //sequência iniciada quando o cliente é trocado e é selecionado o endereço do seu último evento     
@@ -107,9 +135,13 @@ function TelaEdicaoEventoNova(props){
         }        
     }, [eventoParaTrocaDeEndereco]);
 
-    function ok(){
-        //criando o array provisório para os dados do evento e capturando os valores dos inputs
+    async function ok(){
+        //if(cliente && cliente.hasOwnProperty("id_cliente"))
+        console.log(evento);
+         //criando o array provisório para os dados do evento e capturando os valores dos inputs
         let eventoProv = {
+            id_evento: evento.id_evento,
+            id_cliente: 221,
             data: document.getElementById('data').value,
             logradouro: document.getElementById('logradouro').value,
             numero: document.getElementById('numero').value,
@@ -118,13 +150,38 @@ function TelaEdicaoEventoNova(props){
             complemento: document.getElementById('complemento').value,
             observacao: document.getElementById('observacao').value,
             observacao_evento: document.getElementById('observacao_evento').value,
-            possiu_local_abrigado: document.getElementById('abrigo').value,
+            possui_local_abrigado: document.getElementById('abrigo').value,
             valor_sinal: retornaApenasNumeros(document.getElementById('sinal').value),
             valor_desconto: retornaApenasNumeros(document.getElementById('desconto').value),
             valor_total: retornaApenasNumeros(document.getElementById('valor_total').value)
         }
-        console.log(eventoProv);
-    }    
+        if(brinquedosEditados){
+            eventoProv.brinquedos = brinquedos;
+            brinquedosEditados = false;
+        }
+        console.log(clienteEditado);
+        if(clienteEditado){
+            eventoProv.cliente = cliente;
+            setClienteEditado = false;
+        }
+
+        let res = await FetchApi.edicaoPutSemArquivo(`evento/${eventoProv.id_evento}`, eventoProv);
+        
+        if(res.status){ //caso tenha editado mesmo
+            mensagem("Editado com Sucesso!", {theme: 'colored', type: 'success'});
+            //props.controle();
+        }else{
+            mensagem("Ocorreu um erro ao editar", {theme: 'dark', type: 'error'});
+            console.log(res);
+        }
+        //faz aparecer a mensagem setada a pouco            
+        notify();
+        //faz aparecer a url com o id correto
+        navigate('/eventos/'+eventoProv.id_evento);
+        //refaz a busca pelo evento recém editado
+        ListarEventoPorId (eventoProv.id_evento, setConteudoDaTela);           
+    }
+    
     
    function editar(){
         if(emEdicao){
@@ -139,10 +196,12 @@ function TelaEdicaoEventoNova(props){
 
     return(
         <div>
-            <TelaDadosCliente cliente = {cliente} 
+            <TelaDadosCliente cliente = {cliente}
+            setCliente = {setCliente} 
             setAtualizarEnderecoEvento = {setAtualizarEnderecoEvento} 
             emEdicao = {stateEmEdicao}
-            setEventoParaTrocaDeEndereco = {setEventoParaTrocaDeEndereco}   
+            setEventoParaTrocaDeEndereco = {setEventoParaTrocaDeEndereco}
+            setClienteEditado = {setClienteEditado}  
             />
             {/* O cliente é enviado somente se for solicitada a atualização do endereço do evento */}
             <TelaDadosEvento evento = {evento}
@@ -165,6 +224,7 @@ function TelaEdicaoEventoNova(props){
             brinquedos={brinquedos} 
             setBrinquedos={setBrinquedos} 
             data_evento={evento.data_evento} 
+            setBrinquedosEditados = {setBrinquedosEditados}
             />
         </div>
     );

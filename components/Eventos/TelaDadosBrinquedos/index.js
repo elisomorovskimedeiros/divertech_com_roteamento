@@ -4,7 +4,6 @@ import ListaDeBrinquedosNoEvento from "../../Brinquedos/ListaDeBrinquedosNoEvent
 import TelaDeTrocaDeBrinquedosNoEvento from "../../Brinquedos/TelaDeTrocaDeBrinquedosNoEvento";
 
 function TelaDadosBrinquedos(props){
-    let brinquedosEditados = false;
     const [brinquedos, setBrinquedos] = useState([]);
     
     const [trocarBrinquedos, setTrocarBrinquedos] = useState(false);
@@ -12,7 +11,7 @@ function TelaDadosBrinquedos(props){
 
     function escolherBrinquedos(){
         if(props.emEdicao){
-            brinquedosEditados = true;
+            props.setBrinquedosEditados(true);
             setTrocarBrinquedos(!trocarBrinquedos);
         }
     }
@@ -21,7 +20,7 @@ function TelaDadosBrinquedos(props){
         <div>
             <h1>Brinquedos do Evento</h1>
             <div onClick={escolherBrinquedos} className={`listaDeBrinquedosNoEvento espacoADireita ${props.emEdicao?"editarClienteNoEvento linkFake listaDeBrinquedosNoEventoEmEdicao":''}`}>
-                {!(props.brinquedos === undefined || props.brinquedos.length === 0)? <ListaDeBrinquedosNoEvento brinquedos={props.brinquedos} />
+                {(props.brinquedos && props.brinquedos.length !== 0)? <ListaDeBrinquedosNoEvento brinquedos={props.brinquedos} />
                 :
                 <h1>Evento ainda sem brinquedos</h1>}
             </div>

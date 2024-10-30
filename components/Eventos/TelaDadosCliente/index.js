@@ -7,16 +7,21 @@ import TelaQuestaoDaTrocaDeEndereco from './TelaQuestaoDaTrocaDeEndereco';
 import Modal from '../../Modal';
 
 function TelaDadosCliente(props){
-    const [cliente, setCliente] = useState(props.cliente);
     const [trocarCliente, setTrocarCliente] = useState(false);
     const [perguntarTrocaDeEndereco, setPerguntarTrocaDeEndereco] = useState(false);
     const [perguntarSobreEnderecoDeClienteSemEvento, setPerguntarSobreEnderecoDeClienteSemEvento] = useState(false);
     const [ultimoEvento, setUltimoEvento] = useState({});
+    const {cliente, setCliente, evento, setEvento} = useContext(ContextoGlobal);
     useEffect(() => {
     }, [controleJanelaCliente]); 
 
     function controleJanelaCliente(){
+        
         if(props.emEdicao){
+           //setClienteEditado é utilizado para que na hora de enviar o formulário com o evento editado
+           //o algorítmo saiba se precisa ou não incluir o objeto cliente no evento 
+           props.setClienteEditado(true);
+            //setTrocarCliente dispara a abertura da janela de seleção de um novo cliente, o <BuscaDetalhadaClientes/>
             setTrocarCliente(!trocarCliente);
         }
     }
@@ -24,18 +29,14 @@ function TelaDadosCliente(props){
     //executa a troca do endereço do evento, faz a requizição para pegar último evento desse novo cliente
     async function trocarEnderecoDoEvento(idCliente){
         let res = await FetchApi.consultaGet(`/ultimoEvento/${idCliente}`);
-        
         if(res.evento.length > 0){
-
-            if(res.evento[0].logradouro_evento){                
-                setPerguntarTrocaDeEndereco(true)
-            }else{
-                setPerguntarSobreEnderecoDeClienteSemEvento(true)
-            }
+            setUltimoEvento(res.evento[0]);
+            //controle da janela que pergunta sobre a troca do endereço
+            setPerguntarTrocaDeEndereco(true);
             
-            props.setEventoParaTrocaDeEndereco(res.evento[0]);
         }
-        props.setAtualizarEnderecoEvento(true);
+
+        //props.setAtualizarEnderecoEvento(true);
     }
 
     //caso o cliente ainda não tenha eventos realizados, utiliza o endereço do próprio cliente para o evento
@@ -45,11 +46,12 @@ function TelaDadosCliente(props){
 
     //recebe o novo cliente e solicita a troca no evento
     function escolherCliente(clienteRecebido){
-        if(cliente.id_cliente !== clienteRecebido.id_cliente){
-            controleJanelaCliente();
-            setCliente(clienteRecebido);
-            trocarEnderecoDoEvento(clienteRecebido.id_cliente);                       
-        }
+        setCliente(clienteRecebido);
+        let eventoProv = evento;
+        eventoProv.id_cliente = clienteRecebido.id_cliente;
+        setEvento(eventoProv);
+        controleJanelaCliente();        
+        trocarEnderecoDoEvento(clienteRecebido.id_cliente); 
     }
 
     return(
@@ -67,12 +69,18 @@ function TelaDadosCliente(props){
                 </div>
             </div>
             {trocarCliente && <BuscaDetalhadaClientes 
-                    controle={controleJanelaCliente} 
-                    escolherCliente={escolherCliente}/>
+                controle={controleJanelaCliente} 
+                escolherCliente={escolherCliente}
+                />
             }
-            {perguntarTrocaDeEndereco && <Modal titulo = {"Deseja trocar o endereço do evento?"} controle = {setPerguntarTrocaDeEndereco}>
-                                            <TelaQuestaoDaTrocaDeEndereco/>
-                                        </Modal>}
+            { perguntarTrocaDeEndereco && <TelaQuestaoDaTrocaDeEndereco 
+                controle = {setPerguntarTrocaDeEndereco}
+                cliente = {cliente}
+                ultimoEvento = {ultimoEvento}
+                setEventoParaTrocaDeEndereco = {props.setEventoParaTrocaDeEndereco}
+                setAtualizarEnderecoEvento = {props.setAtualizarEnderecoEvento}
+                />
+                 }
             {/*perguntarSobreEnderecoDeClienteSemEvento && <TelaQuestaoSobreClienteSemEvento />*/}
         </div>
     )
